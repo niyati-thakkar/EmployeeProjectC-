@@ -1,0 +1,160 @@
+-- Drop table queries
+DROP TABLE IF EXISTS ADDRESS;
+DROP TABLE IF EXISTS MANAGER;
+DROP TABLE IF EXISTS ENGINEER;
+DROP TABLE IF EXISTS DEPARTMENT;
+DROP TABLE IF EXISTS HR;
+DROP TABLE IF EXISTS EMPLOYEE;
+CREATE TABLE EMPLOYEE (
+    EmpId INTEGER PRIMARY KEY AUTOINCREMENT,
+    FirstName VARCHAR(30) NOT NULL,
+    MiddleName VARCHAR(30),
+    LastName VARCHAR(30) NOT NULL,
+    Contact VARCHAR(10) NOT NULL UNIQUE,
+    Email VARCHAR(100) UNIQUE,
+    DOB DATE NOT NULL,
+    JoiningDate DATE NOT NULL,
+    DepartmentID INT NOT NULL,
+    ReportingManagerID INT,
+BaseSalary DOUBLE NOT NULL,
+PerformanceRating DOUBLE NOT NULL,
+YearsOfExperience INT NOT NULL,
+    FOREIGN KEY (DepartmentID) REFERENCES DEPARTMENT(DepartmentID) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (ReportingManagerID) REFERENCES employee(EmpId) ON DELETE SET NULL ON UPDATE CASCADE
+);
+
+CREATE TABLE HR (
+    HRID INTEGER PRIMARY KEY AUTOINCREMENT,
+    EmpID INTEGER NOT NULL,
+    ProficientLanguage VARCHAR(50) NOT NULL,
+    RecruitingExperience INT,
+    FOREIGN KEY (EmpID) REFERENCES employee(EmpId) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+CREATE TABLE DEPARTMENT (
+    DepartmentID INTEGER PRIMARY KEY AUTOINCREMENT,
+    DeptName VARCHAR(50) NOT NULL,
+    DeptManager INTEGER NOT NULL UNIQUE,
+    Description TEXT,
+    FOREIGN KEY (DeptManager) REFERENCES employee(EmpId) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+CREATE TABLE ENGINEER (
+    EngineerID INTEGER PRIMARY KEY AUTOINCREMENT,
+    EmpID INTEGER NOT NULL,
+    EngineerSpecialization VARCHAR(50) NOT NULL,
+    CurrentProject VARCHAR(50),
+    FOREIGN KEY (EmpID) REFERENCES employee(EmpId) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+CREATE TABLE MANAGER (
+    ManagerID INTEGER PRIMARY KEY AUTOINCREMENT,
+    EmpID INTEGER NOT NULL,
+    ManagementSpecialization VARCHAR(50) NOT NULL,
+    YearsOfManagementExperience INT,
+    FOREIGN KEY (EmpID) REFERENCES employee(EmpId) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+CREATE TABLE ADDRESS (
+    AddressID INTEGER PRIMARY KEY AUTOINCREMENT,
+    EmpID INTEGER NOT NULL,
+    Location VARCHAR(50) NOT NULL,
+    City VARCHAR(50) NOT NULL,
+    State VARCHAR(50) NOT NULL,
+    PINCODE INT NOT NULL,
+    FOREIGN KEY (EmpID) REFERENCES employee(EmpId) ON DELETE CASCADE ON UPDATE CASCADE
+);
+-- Insert entries for MANAGEMENT table
+INSERT INTO MANAGER (ManagerID, EmpID, ManagementSpecialization, YearsOfManagementExperience) VALUES
+(3000001, 1000011, 'Finance', 8),
+(3000002, 1000012, 'Operations', 6),
+(3000003, 1000013, 'Marketing', 10),
+(3000004, 1000014, 'Sales', 7),
+(3000005, 1000015, 'Human Resources', 9);
+
+INSERT INTO HR (HRID, EmpID, ProficientLanguage, RecruitingExperience) VALUES
+(5000001, 1000001, 'Python', 3),
+(5000002, 1000002, 'Java', 5),
+(5000003, 1000003, 'C++', 4),
+(5000004, 1000004, 'JavaScript', 2),
+(5000005, 1000005, 'SQL', 6);
+
+INSERT INTO ENGINEER (EngineerID, EmpID, EngineerSpecialization, CurrentProject) VALUES
+(4000001, 1000006, 'Web Development', 'E-commerce website'),
+(4000002, 1000007, 'Data Science', 'Customer segmentation project'),
+(4000003, 1000008, 'Mobile App Development', 'iOS app redesign'),
+(4000004, 1000009, 'Network Security', 'Firewall upgrade'),
+(4000005, 1000010, 'Database Administration', 'Migration to new database server');
+
+INSERT INTO DEPARTMENT (DepartmentID, DeptName, DeptManager, Description) VALUES
+(2000001, 'Human Resources', 1000001, 'Responsible for hiring and managing employees.'),
+(2000002, 'Technology', 1000003, 'Responsible for technology-related tasks and projects.'),
+(2000003, 'Management', 1000011, 'Responsible for overall management and decision-making.');
+
+-- Insert entries for ADDRESS table
+INSERT INTO ADDRESS (AddressId, EmpID, Location, City, State, PINCODE) VALUES
+(6000001, 1000001, '123 Main St', 'Springfield', 'IL', 62701),
+(6000002, 1000002, '456 Oak St', 'Springfield', 'IL', 62702),
+(6000003, 1000003, '789 Pine St', 'Springfield', 'IL', 62703),
+(6000004, 1000004, '101 Elm St', 'Springfield', 'IL', 62704),
+(6000005, 1000005, '222 Maple St', 'Springfield', 'IL', 62705),
+(6000006, 1000006, '333 Cedar St', 'Springfield', 'IL', 62706),
+(6000007, 1000007, '444 Birch St', 'Springfield', 'IL', 62707),
+(6000008, 1000008, '555 Walnut St', 'Springfield', 'IL', 62708),
+(6000009, 1000009, '666 Willow St', 'Springfield', 'IL', 62709),
+(6000010, 1000010, '777 Spruce St', 'Springfield', 'IL', 62710),
+(6000011, 1000011, '888 Pine St', 'Springfield', 'IL', 62711),
+(6000012, 1000012, '999 Elm St', 'Springfield', 'IL', 62712),
+(6000013, 1000013, '111 Maple St', 'Springfield', 'IL', 62713),
+(6000014, 1000014, '222 Cedar St', 'Springfield', 'IL', 62714),
+(6000015, 1000015, '333 Birch St', 'Springfield', 'IL', 62715),
+(6000016, 1000016, '444 Walnut St', 'Springfield', 'IL', 62716),
+(6000017, 1000017, '555 Willow St', 'Springfield', 'IL', 62717),
+(6000018, 1000018, '666 Spruce St', 'Springfield', 'IL', 62718),
+(6000019, 1000019, '777 Pine St', 'Springfield', 'IL', 62719),
+(6000020, 1000020, '888 Elm St', 'Springfield', 'IL', 62720);
+
+INSERT INTO EMPLOYEE (EmpId, FirstName, MiddleName, LastName, Contact, Email, DOB, JoiningDate, DepartmentID, ReportingManagerID, BaseSalary, PerformanceRating, YearsOfExperience) VALUES
+(1000001, 'John', 'Doe', 'Smith', '123-456-7801', 'john.smith@example.com', '1990-05-15', '2020-01-10', 2000001, NULL, 50000.0, 4.5, 10),
+(1000002, 'Jane', 'Marie', 'Johnson', '234-567-8910', 'jane.johnson@example.com', '1988-08-20', '2019-12-05', 2000001, 1000001, 55000.0, 4.2, 8),
+(1000003, 'Michael', NULL, 'Williams', '345-678-9021', 'michael.williams@example.com', '1995-02-28', '2021-03-22', 2000002, 1000001, 60000.0, 4.8, 12),
+(1000004, 'Emily', 'Grace', 'Brown', '456-789-0132', 'emily.brown@example.com', '1993-07-10', '2020-05-01', 2000003, 1000002, 52000.0, 4.3, 9),
+(1000005, 'Daniel', 'James', 'Miller', '567-890-1243', 'daniel.miller@example.com', '1991-11-03', '2018-09-15', 2000003, 1000001, 58000.0, 4.6, 11),
+(1000006, 'Sarah', 'Elizabeth', 'Davis', '678-901-2354', 'sarah.davis@example.com', '1994-04-18', '2019-11-30', 2000002, 1000001, 54000.0, 4.1, 7),
+(1000007, 'Matthew', 'Thomas', 'Wilson', '789-012-3465', 'matthew.wilson@example.com', '1992-09-25', '2020-07-12', 2000001, 1000002, 61000.0, 4.9, 13),
+(1000008, 'Olivia', 'Sophia', 'Taylor', '890-123-4576', 'olivia.taylor@example.com', '1996-12-08', '2021-02-10', 2000002, 1000003, 59000.0, 4.7, 11),
+(1000009, 'William', 'Alexander', 'Anderson', '901-234-5687', 'william.anderson@example.com', '1989-06-30', '2017-08-20', 2000001, 1000003, 53000.0, 4.4, 9),
+(1000010, 'Emma', 'Charlotte', 'Martinez', '012-345-6798', 'emma.martinez@example.com', '1997-03-12', '2022-01-05', 2000003, 1000001, 57000.0, 4.2, 8),
+(1000011, 'James', 'David', 'Hernandez', '123-456-7810', 'james.hernandez@example.com', '1990-05-15', '2020-01-10', 2000003, NULL, 60000.0, 4.8, 10),
+(1000012, 'Isabella', 'Gabriella', 'Garcia', '234-567-8921', 'isabella.garcia@example.com', '1988-08-20', '2019-12-05', 2000001, 1000011, 55000.0, 4.3, 9),
+(1000013, 'Alexander', 'Ethan', 'Lopez', '345-678-9032', 'alexander.lopez@example.com', '1995-02-28', '2021-03-22', 2000002, 1000011, 61000.0, 4.9, 12),
+(1000014, 'Sophia', 'Ava', 'Perez', '456-789-0143', 'sophia.perez@example.com', '1993-07-10', '2020-05-01', 2000003, 1000012, 52000.0, 4.5, 8),
+(1000015, 'Michael', 'Mason', 'Flores', '567-890-1254', 'michael.flores@example.com', '1991-11-03', '2018-09-15', 2000003, 1000011, 59000.0, 4.6, 11),
+(1000016, 'Mia', 'Zoe', 'Sanchez', '678-901-2365', 'mia.sanchez@example.com', '1994-04-18', '2019-11-30', 2000002, 1000011, 55000.0, 4.2, 7),
+(1000017, 'Benjamin', 'Sebastian', 'Smith', '789-012-3476', 'benjamin.smith@example.com', '1992-09-25', '2020-07-12', 2000001, 1000012, 60000.0, 4.8, 13),
+(1000018, 'Evelyn', 'Amelia', 'Gomez', '890-123-4587', 'evelyn.gomez@example.com', '1996-12-08', '2021-02-10', 2000002, 1000013, 58000.0, 4.7, 10),
+(1000019, 'Alexander', 'Elijah', 'Rodriguez', '901-234-5698', 'alexander.rodriguez@example.com', '1989-06-30', '2017-08-20', 2000001, 1000013, 53000.0, 4.4, 9),
+(1000020, 'Charlotte', 'Sofia', 'Hernandez', '012-345-6709', 'charlotte.hernandez@example.com', '1997-03-12', '2022-01-05', 2000003, 1000011, 57000.0, 4.3, 8);
+
+
+-- Select * queries
+SELECT * FROM EMPLOYEE;
+SELECT * FROM HR;
+SELECT * FROM DEPARTMENT;
+SELECT * FROM ENGINEER;
+SELECT * FROM MANAGER;
+SELECT * FROM ADDRESS;
+
+-- Delete queries
+DELETE FROM EMPLOYEE;
+DELETE FROM HR;
+DELETE FROM DEPARTMENT;
+DELETE FROM ENGINEER;
+DELETE FROM MANAGER;
+DELETE FROM ADDRESS;
+
+PRAGMA foreign_keys = ON;
+PRAGMA foreign_keys = OFF;
+
+PRAGMA case_sensitive_like = ON;
+PRAGMA case_sensitive_like = OFF;
